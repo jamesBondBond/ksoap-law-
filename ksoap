@@ -1,0 +1,338 @@
+package net.lawsauce.droid;
+
+import org.ksoap2.SoapEnvelope;
+import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapPrimitive;
+import org.ksoap2.serialization.SoapSerializationEnvelope;
+import org.ksoap2.transport.HttpTransportSE;
+
+import android.util.Log;
+
+public class MyWebServices 
+{
+	private String udid = null;
+	
+	private final String NAMESPACE = "http://dottechnologies.net/webservices/";	
+	private final String URL = "http://lawsauce.net/ws1.asmx";	
+
+	private final String SOAP_ACTION_CHECK_SUBCR = "http://dottechnologies.net/webservices/CheckSubsriction";
+	private final String METHOD_NAME_CHECK_SUBCR = "CheckSubsriction";
+
+	private final String SOAP_ACTION_CREATE_SUBCR = "http://dottechnologies.net/webservices/CreateSubscription";
+	private final String METHOD_NAME_CREATE_SUBCR = "CreateSubscription";
+
+	private final String SOAP_ACTION_SUBR_PLAN = "http://dottechnologies.net/webservices/GetAnnualSubscriptionCharges";
+	private final String METHOD_NAME_SUBR_PLAN = "GetAnnualSubscriptionCharges";
+	
+	private final String SOAP_ACTION_REFER = "http://dottechnologies.net/webservices/ReferFriend";
+	private final String METHOD_NAME_REFER = "ReferFriend";
+	
+	private final String SOAP_ACTION_TASK_TABLE = "http://dottechnologies.net/webservices/GetTaskTable";
+	private final String METHOD_NAME_TASK_TABLE= "GetTaskTable";
+	
+	private final String SOAP_ACTION_COUNTRIES_TABLE = "http://dottechnologies.net/webservices/GetCountryTable";
+	private final String METHOD_NAME_COUNTRIES_TABLE = "GetCountryTable";
+	
+	private final String SOAP_ACTION_JURISDICTION_TABLE = "http://dottechnologies.net/webservices/GetJurisdictionTable";
+	private final String METHOD_NAME_JURISDICTION_TABLE = "GetJurisdictionTable";
+	
+	private final String SOAP_ACTION_TASKJURISDICTION_TABLE = "http://dottechnologies.net/webservices/getTaskJurisdictionTable";
+	private final String METHOD_NAME_TASKJURISDICTION_TABLE = "getTaskJurisdictionTable";
+	
+	private final String SOAP_ACTION_TITLES_TABLE = "http://dottechnologies.net/webservices/GetTitlesTable";
+	private final String METHOD_NAME_TITLES_TABLE = "GetTitlesTable";
+	
+	private final String SOAP_ACTION_RESOURCES_TABLE = "http://dottechnologies.net/webservices/GetResourceTable";
+	private final String METHOD_NAME_RESOURCES_TABLE = "GetResourceTable";
+	
+	private final String SOAP_ACTION_CHECKUPDATES = "http://dottechnologies.net/webservices/CheckDatabaseUpdates";
+	private final String METHOD_NAME_CHECKUPDATES = "CheckDatabaseUpdates";
+	
+	
+
+	
+	/** --- GET TASKS TABLE --- **/
+	public String GetTasksTable(String task) 
+	{
+		SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME_TASK_TABLE);
+
+		request.addProperty("TableName", task);
+
+		SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+		envelope.dotNet = true;
+		envelope.setOutputSoapObject(request);
+		HttpTransportSE transportSE = new HttpTransportSE(URL);
+
+		try
+		{
+			transportSE.call(SOAP_ACTION_TASK_TABLE, envelope);
+			SoapPrimitive response = (SoapPrimitive) envelope.getResponse();
+
+			return response.toString();
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+			return e.getMessage();   
+		}
+	}
+	
+	/** --- GET COUNTRY TABLE --- **/
+	public String GetCountryTable(String country) 
+	{
+		SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME_COUNTRIES_TABLE);
+		
+		request.addProperty("TableName", country);
+		Log.w("country", country);
+		SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+		envelope.dotNet = true;
+		envelope.setOutputSoapObject(request);
+		HttpTransportSE transportSE = new HttpTransportSE(URL);
+
+		try
+		{
+			transportSE.call(SOAP_ACTION_COUNTRIES_TABLE, envelope);
+			SoapPrimitive response = (SoapPrimitive) envelope.getResponse();
+
+			return response.toString();
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+			return e.getMessage();   
+		}
+	}
+	
+	/** --- GET JURISDICTION TABLE --- **/
+	public String GetJurisdictionTable(String jurisdiction) 
+	{
+		SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME_JURISDICTION_TABLE);
+
+		request.addProperty("TableName", jurisdiction);
+
+		SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+		envelope.dotNet = true;
+		envelope.setOutputSoapObject(request);
+		HttpTransportSE transportSE = new HttpTransportSE(URL);
+
+		try
+		{
+			transportSE.call(SOAP_ACTION_JURISDICTION_TABLE, envelope);
+			SoapPrimitive response = (SoapPrimitive) envelope.getResponse();
+
+			return response.toString();
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+			return e.getMessage();
+		}
+	}
+	
+	/** --- getTASK & JURISDICTION TABLE --- **/
+	public String GetTaskJurisdictionTable(String TableName) 
+	{
+		SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME_TASKJURISDICTION_TABLE);
+
+		request.addProperty("TableName", TableName);
+
+		SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+		envelope.dotNet = true;
+		envelope.setOutputSoapObject(request);
+		HttpTransportSE transportSE = new HttpTransportSE(URL);
+
+		try
+		{
+			transportSE.call(SOAP_ACTION_TASKJURISDICTION_TABLE, envelope);
+			SoapPrimitive response = (SoapPrimitive) envelope.getResponse();
+
+			return response.toString();
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+			return e.getMessage();   
+		}
+	}
+	
+	/** --- GET TITLE TABLE --- **/
+	public String GetTitleTable(int start, int end, String TableName) 
+	{
+		SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME_TITLES_TABLE);
+
+		request.addProperty("start", start);
+		request.addProperty("end", end);
+		request.addProperty("TableName", TableName);
+
+		SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+		envelope.dotNet = true;
+		envelope.setOutputSoapObject(request);
+		HttpTransportSE transportSE = new HttpTransportSE(URL);
+
+		try
+		{
+			transportSE.call(SOAP_ACTION_TITLES_TABLE, envelope);
+			SoapPrimitive response = (SoapPrimitive) envelope.getResponse();
+
+			return response.toString();
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+			return e.getMessage();   
+		}
+	}
+	
+	/** --- GET RESOURCES TABLE --- **/
+	public String GetResourcesTable(int start, int end, String resourceTable)
+	{
+		SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME_RESOURCES_TABLE);
+
+		request.addProperty("Start", start);
+		request.addProperty("end", end);
+		request.addProperty("TableName", resourceTable);
+
+		SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+		envelope.dotNet = true;
+		envelope.setOutputSoapObject(request);
+		HttpTransportSE transportSE = new HttpTransportSE(URL);
+
+		try
+		{
+			transportSE.call(SOAP_ACTION_RESOURCES_TABLE, envelope);
+			SoapPrimitive response = (SoapPrimitive) envelope.getResponse();
+			return response.toString();
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+			return e.getMessage();   
+		}
+	}
+	
+	
+	/** --- Check Database Updates --- **/
+	public long CheckDatabaseUpdates() {
+		SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME_CHECKUPDATES);			
+
+		SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER12);
+		envelope.dotNet = true;
+		envelope.setOutputSoapObject(request);
+		HttpTransportSE transportSE = new HttpTransportSE(URL);
+
+		try 
+		{			
+			transportSE.call(SOAP_ACTION_CHECKUPDATES, envelope);			
+			SoapPrimitive response = (SoapPrimitive) envelope.getResponse();
+			String res = response.toString();
+			long ret = Long.parseLong(res);
+			return ret;
+		} 
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	
+	
+
+	/** --- Check Subscription --- **/
+	public String CheckSubscription(String IEMI) {
+		SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME_CHECK_SUBCR);
+		
+		request.addProperty("IEMICode", IEMI);
+		request.addProperty("UDIDCode", udid);
+
+		SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
+				SoapEnvelope.VER11);
+		envelope.dotNet = true;
+		envelope.setOutputSoapObject(request);
+		HttpTransportSE transportSE = new HttpTransportSE(URL);
+
+		try {
+			transportSE.call(SOAP_ACTION_CHECK_SUBCR, envelope);
+			SoapPrimitive response = (SoapPrimitive) envelope.getResponse();
+
+			return response.toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return e.getMessage();
+		}
+	}
+
+	/** --- Create Subscription --- **/
+	public String CreateSubscription(String IEMI, String PayKey, String Fname, String Lname, String Email)
+	{
+		SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME_CREATE_SUBCR);
+		
+		request.addProperty("IEMICode", IEMI);
+		request.addProperty("UDIDCode", udid);
+		request.addProperty("PayKey", PayKey);
+		request.addProperty("Fname", Fname);
+		request.addProperty("Lname", Lname);
+		request.addProperty("Email", Email);
+		
+
+		SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+		envelope.dotNet = true;
+		envelope.setOutputSoapObject(request);
+		HttpTransportSE transportSE = new HttpTransportSE(URL);
+
+		try {
+			transportSE.call(SOAP_ACTION_CREATE_SUBCR, envelope);
+			SoapPrimitive response = (SoapPrimitive) envelope.getResponse();
+
+			return response.toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return e.getMessage();
+		}
+	}
+
+	/** --- Subscription pLAN --- **/
+	public String SubscriptionPlan() {
+		SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME_SUBR_PLAN);
+
+		SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
+				SoapEnvelope.VER11);
+		envelope.dotNet = true;
+		envelope.setOutputSoapObject(request);
+		HttpTransportSE transportSE = new HttpTransportSE(URL);
+
+		try {
+			transportSE.call(SOAP_ACTION_SUBR_PLAN, envelope);
+			SoapPrimitive response = (SoapPrimitive) envelope.getResponse();
+
+			return response.toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return e.getMessage();
+		}
+	}
+	
+	/** ------- Refer a FRIEND --------  ***/
+	public String ReferFriend(String Name, String Email) {
+		SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME_REFER);		
+		
+		request.addProperty("Name", Name);
+		request.addProperty("Email", Email);
+
+		SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+		envelope.dotNet = true;
+		envelope.setOutputSoapObject(request);
+		HttpTransportSE transportSE = new HttpTransportSE(URL);
+
+		try
+		{
+			transportSE.call(SOAP_ACTION_REFER, envelope);
+			SoapPrimitive response = (SoapPrimitive) envelope.getResponse();
+			String res = response.toString();
+			return res;
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+			return e.getMessage();
+		}
+	}
+}
